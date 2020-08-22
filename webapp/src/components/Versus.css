@@ -1,0 +1,39 @@
+.sidebar-btn {
+    font-size: 22px;
+    padding: 0 12px;
+}
+.sidebar-btn:hover {
+    text-decoration: underline;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+#player-selection {
+    border-collapse: collapse;
+}
+
+th, td {
+	text-align: left;
+	padding: 8px;
+}
+
+th {
+	background-color: #2e7499;
+	color: #d5e8f2;
+}
+
+tr.active {
+    background-color: #d5e8f2;    
+    color: #292b34;
+}
+
+tr.inactive {
+    background-color: #d5e8f2;  
+    color: transparent;    
+}

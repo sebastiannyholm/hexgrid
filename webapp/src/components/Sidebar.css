@@ -1,0 +1,77 @@
+.with-sidebar {
+    width: 100%;
+    height: 100%;
+}
+
+.with-sidebar-content {
+    width: calc(100% - 250px);
+    height: 100%;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #183b4e;
+}
+
+.sidebar-wrapper {
+    width: 250px;
+    min-width: 250px;
+    height: 100%;
+    background-color: #292b34;
+    float: left;
+}
+
+.sidebar {
+    width: 90%;
+    height: 100%;
+    line-height: 48px;
+    background-color: inherit;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.sidebar-item {
+    display: block;
+    text-decoration: none;
+    border: none;
+    background-color: transparent;
+    color: #f2f2f2;
+    font-size: 16px;
+    font-family: "Arial";
+    outline: none;
+    cursor: default;
+}
+
+.interactable:hover {
+    background: #0A1921;
+}
+
+.interactable {
+    cursor: pointer;
+}
+
+[contenteditable="true"].interactable {
+    cursor: text;
+    color: #f2f2f2;
+    font-style: normal;
+}
+
+[contenteditable="true"]:empty:before {
+    content: attr(placeholder);
+    color: #aaaaaa;
+    font-style: italic;
+}
+
+[contenteditable="true"].single-line br {
+    display: none;
+}
+
+[contenteditable="true"].single-line * {
+    display: inline;
+    white-space: nowrap;
+}
+
+[contenteditable="true"].single-line {
+    white-space: nowrap;
+    overflow: hidden;
+}
