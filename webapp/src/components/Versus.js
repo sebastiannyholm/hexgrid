@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './Versus.css';
 import WithSidebar from './Sidebar';
 import { withRouter } from "react-router";
-import {Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import Constants from '../constants.js'
 
@@ -12,8 +12,6 @@ import DefaultBot from '../stored_algorithms/algos/DefaultBot';
 import EasyBot from '../stored_algorithms/algos/EasyBot';
 import twSupply from '../stored_algorithms/algos/twSupply';
 import MakeItSafe from '../stored_algorithms/algos/MakeItSafe';
-
-
 
 function getActivePlayers(availablePlayers) {
     var players = [];
@@ -36,7 +34,7 @@ function getSelectedPlayerCount(availablePlayers) {
     return sum;
 }
 
-function Versus(props) {    
+function Versus(props) {
     let playerName = props.location.state ? props.location.state.playerName : localStorage.getItem(Constants.LOCAL_STORAGE_PLAYER_NAME);
     if (!playerName) playerName = Constants.defaultPlayerName;
 
@@ -44,25 +42,25 @@ function Versus(props) {
     if (!playerCode) playerCode = Constants.defaultEditorCode;
 
     const players = [
-        {name: playerName, codeString: playerCode, count: 1},
-        {name: DefaultBot.name, codeString: DefaultBot.turn.toString(), count: 0},
-        {name: MediumBot.name, codeString: MediumBot.turn.toString(), count: 0},
-        {name: AggressiveBot.name, codeString: AggressiveBot.turn.toString(), count: 0},
-        {name: EasyBot.name, codeString: EasyBot.turn.toString(), count: 0},
-        {name: twSupply.name, codeString: twSupply.turn.toString(), count: 0},
-        {name: MakeItSafe.name, codeString: MakeItSafe.turn.toString(), count: 0},
+        { name: playerName, codeString: playerCode, count: 1 },
+        { name: DefaultBot.name, codeString: DefaultBot.turn.toString(), count: 0 },
+        { name: MediumBot.name, codeString: MediumBot.turn.toString(), count: 0 },
+        { name: AggressiveBot.name, codeString: AggressiveBot.turn.toString(), count: 0 },
+        { name: EasyBot.name, codeString: EasyBot.turn.toString(), count: 0 },
+        { name: twSupply.name, codeString: twSupply.turn.toString(), count: 0 },
+        { name: MakeItSafe.name, codeString: MakeItSafe.turn.toString(), count: 0 },
     ]
 
     const [availablePlayers, setAvailablePlayers] = useState(players);
     const [redirect, setRedirect] = useState(null);
 
     function updatePlayerCount(id, updateFunction) {
-        const updatedPlayers = availablePlayers.map((player,index) => {
+        const updatedPlayers = availablePlayers.map((player, index) => {
             if (index !== id) return player;
             let newCount = updateFunction(player.count)
-            return {...player, count: newCount >= 0 ? newCount : 0}
+            return { ...player, count: newCount >= 0 ? newCount : 0 }
         })
-        setAvailablePlayers(updatedPlayers); 
+        setAvailablePlayers(updatedPlayers);
     }
 
     function redirectGame() {
@@ -74,48 +72,43 @@ function Versus(props) {
             console.log("Minimum 2 players required to start a game")
         }
     }
-      
 
-    return(
+    return (
         redirect ? <Redirect to={{
             pathname: redirect,
             state: {
                 playerCodes: getActivePlayers(availablePlayers)
-            }}}/> : 
+            }
+        }} /> :
 
-        <WithSidebar
-            sidebarElements={
-                players.map((player, index) => 
-                    <span key={index} className="sidebar-item interactable">
-                        <span className="sidebar-btn left" onClick={() => updatePlayerCount(index, (count) => count-1)}>-</span> 
-                            <span>{player.name}</span> 
-                        <span className="sidebar-btn right" onClick={() => updatePlayerCount(index, (count) => count+1)}>+</span> 
-                    </span>
-                )
-            }
-            content={
-                <div className="content">
-                    <h2>Selected Players</h2>
-                    <table id="player-selection">
-                        <thead>
-                            <tr>
-                                <th>Player name</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {availablePlayers.map((player, index) => {
-                                return <tr key={index} className={player.count > 0 ? "active" : "inactive"}>
-                                    <td>{player.name}</td>
-                                    <td>{player.count}</td>
+            <WithSidebar
+                sidebarElements={[<span key={0} className="sidebar-item interactable" onClick={redirectGame}>Start game</span>]}
+                content={
+                    <div className="content">
+                        <h2>Selected Players</h2>
+                        <table id="player-selection">
+                            <thead>
+                                <tr>
+                                    <th>Player name</th>
+                                    <th>Count</th>
                                 </tr>
-                            })}
-                        </tbody>
-                    </table>
-                    <button onClick={redirectGame}>Play game</button>
-                </div>
-            }
-        />
+                            </thead>
+                            <tbody>
+                                {availablePlayers.map((player, index) => {
+                                    return <tr key={index} className={"active"}>
+                                        <td>{player.name}</td>
+                                        <td>
+                                            <button className="icon-btn" onClick={() => updatePlayerCount(index, (count) => count - 1)}><i className="arrow down"></i></button>
+                                            <span>{player.count}</span>
+                                            <button className="icon-btn" onClick={() => updatePlayerCount(index, (count) => count + 1)}><i className="arrow up"></i></button>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            />
     );
 }
 
