@@ -64,12 +64,12 @@ function Versus(props) {
     }
 
     function redirectGame() {
-        // minimum of 2 players needed to start a game
-        if (getSelectedPlayerCount(availablePlayers) >= 2 || getSelectedPlayerCount(availablePlayers) > Constants.PLAYER_COLORS) {
+        // minimum of 1 player needed to start a game
+        if (getSelectedPlayerCount(availablePlayers) >= 1 || getSelectedPlayerCount(availablePlayers) > Constants.PLAYER_COLORS) {
             setRedirect("/game");
             // could also set local storage players here
         } else {
-            console.log("Minimum 2 players required to start a game")
+            console.log("Minimum 1 player required to start a game")
         }
     }
 
