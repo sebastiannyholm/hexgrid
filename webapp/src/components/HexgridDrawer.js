@@ -31,7 +31,7 @@ function drawHexagons(canvas, base_hexagons, players, layout) {
         context.closePath();
 
         // fill hexagon
-        context.fillStyle = hexagon.ownerId === Constants.HexOwner.NONE ? "#9e9e9e" : players[hexagon.ownerId].color.bg;
+        context.fillStyle = hexagon.ownerId === Constants.HexOwner.NONE || !players[hexagon.ownerId] ? "#9e9e9e" : players[hexagon.ownerId].color.bg;
         context.fill();
 
 
@@ -47,7 +47,7 @@ function drawHexagons(canvas, base_hexagons, players, layout) {
 
         // text inside hexagon
         context.font = "bold " + hexagon.radius / 2 + "px " + Constants.FONT_FAMILY
-        context.fillStyle = hexagon.ownerId === Constants.HexOwner.NONE ? "black" : players[hexagon.ownerId].color.fg;
+        context.fillStyle = hexagon.ownerId === Constants.HexOwner.NONE || !players[hexagon.ownerId] ? "black" : players[hexagon.ownerId].color.fg;
         context.fillText(hexagon.resources, hexagon.center.x, hexagon.center.y, hexagon.radius);
 
     }

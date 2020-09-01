@@ -55,9 +55,12 @@ function GameOffline(props) {
 
     function newGame() {
         game = new Game();
-        props.location.state.playerCodes.forEach(player => {
-            game.addPlayer(utils.generateGUID(), player.name, player.codeString);
-        });
+        console.log(props);
+        if (props.location.state && props.location.state.playerCodes) {
+            props.location.state.playerCodes.forEach(player => {
+                game.addPlayer(utils.generateGUID(), player.name, player.codeString);
+            });
+        }
         game.setup();
         setGameState(game.getCurrentState());
         console.log(game);
