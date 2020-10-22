@@ -1,4 +1,3 @@
-
 const LOCAL_STORAGE_PLAYER_NAME = "playerName";
 const LOCAL_STORAGE_EDITOR_CODE = "editorCode";
 
