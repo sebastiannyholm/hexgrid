@@ -56,7 +56,7 @@ function GameLive(props) {
 
     function joinGame() {
         console.log("Joining game");
-        socketAPI.joinGame("UUUSER");
+        socketAPI.joinGame(localStorage.getItem(Constants.LOCAL_STORAGE_PLAYER_NAME), "Anonymous");
     }
 
 
