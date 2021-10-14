@@ -3,7 +3,7 @@ import { createServer } from "http";
 import socketIo from "socket.io";
 
 const port = process.env.PORT || 4001;
-import router from "./src/routes/index";
+import router from "./src/routes/index.js";
 
 const app = express();
 app.use(router);
