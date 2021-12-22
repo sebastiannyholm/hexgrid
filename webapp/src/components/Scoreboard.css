@@ -1,7 +1,43 @@
 .capitalize {
-    text-transform: capitalize;
+  text-transform: capitalize;
+}
+.table {
+  border-collapse: collapse;
 }
 
-table {
-    border-collapse: collapse;
+.table-scroll {
+  border-collapse: collapse;
+}
+
+.table-scroll thead {
+  display: block;
+  overflow-y: scroll;
+  background-color: #2e7499;
+}
+
+.table-scroll thead::-webkit-scrollbar {
+  visibility: hidden;
+}
+
+.table-scroll tbody {
+  display: block;
+  overflow-y: scroll;
+  max-height: 185px;
+}
+
+.table-scroll tr {
+  display: flex;
+  height: fit-content;
+}
+
+.table-scroll th,
+.table-scroll td {
+  flex-basis: 100%;
+  text-align: left;
+  padding: 8px;
+}
+
+.table-scroll th {
+  background-color: #2e7499;
+  color: #d5e8f2;
 }
