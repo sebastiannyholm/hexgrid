@@ -1,0 +1,82 @@
+.players {
+  background: #292b34;
+}
+
+.player {
+  display: flex;
+  font-size: 1.2em;
+  border-bottom: solid 2px #444;
+  letter-spacing: 1.2px;
+}
+
+.remove-player {
+  visibility: hidden;
+  margin-right: 10px;
+  color: #e57373;
+  cursor: pointer;
+}
+
+.player-name:hover .remove-player {
+  visibility: visible;
+}
+
+.player-name {
+  flex-grow: 1;
+  padding: 15px 10px 10px 10px;
+  color: #f2f2f2;
+  font-weight: bold;
+}
+
+.player-count {
+  width: 190px;
+}
+
+.counter {
+  display: flex;
+}
+
+.counter-action {
+  border: none;
+  font-weight: bold;
+  color: #f2f2f2;
+  display: block;
+  padding: 20px 20px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.counter-action.increment {
+  background: #66bb6a;
+}
+
+.counter-action.increment:hover {
+  background: #549d59;
+  cursor: pointer;
+}
+
+.counter-action.decrement {
+  background: #ef5350;
+}
+
+.counter-action.decrement:hover {
+  background: #c44442;
+  cursor: pointer;
+}
+
+.counter-count {
+  flex-grow: 1;
+  background: #292b34;
+  color: #f2f2f2;
+  text-align: center;
+  font-family: monospace;
+  padding: 10px;
+  font-size: 2em;
+}
+
+.padding-border {
+  width: 98%;
+  height: 98%;
+}

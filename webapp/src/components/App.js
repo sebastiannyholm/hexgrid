@@ -9,6 +9,7 @@ import GameOffline from './GameOffline';
 import GameLive from './GameLive';
 
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import PlayerSelect from './PlayerSelect';
 
 function App() {
   // const [msg, setMsg] = useState("msg");
@@ -28,7 +29,7 @@ function App() {
         path="/versus"
         render={() => (
           <WithNavigation>
-            <Versus />
+            <PlayerSelect />
           </WithNavigation>
         )}
       />
