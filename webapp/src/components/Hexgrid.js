@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './Hexgrid.css';
+import '../styles/Hexgrid.css';
 import drawHexagons from './HexgridDrawer';
 
 function HexgridLayout(width, height, orientation, hex_radius) {

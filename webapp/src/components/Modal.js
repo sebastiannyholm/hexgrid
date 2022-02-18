@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Modal.css';
+import '../styles/Modal.css';
 
 function Modal({ headerText, bodyText, footerText }) {
   return (

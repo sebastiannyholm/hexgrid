@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Game.css';
+import '../styles/Game.css';
 import WithSidebar from './Sidebar';
 import { withRouter } from 'react-router';
 

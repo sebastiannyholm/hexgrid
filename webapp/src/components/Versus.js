@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './Versus.css';
+import '../styles/Versus.css';
 import WithSidebar from './Sidebar';
 import { withRouter } from 'react-router';
 import { Redirect } from 'react-router-dom';

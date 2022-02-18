@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './DocsRules.css';
+import '../styles/DocsRules.css';
 import WithSidebar from './Sidebar';
 
 import Rules from './Rules';

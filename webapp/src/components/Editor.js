@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Editor.css';
+import '../styles/Editor.css';
 import WithSidebar from './Sidebar';
 import { Redirect } from 'react-router-dom';
 import Constants from '../constants.js';

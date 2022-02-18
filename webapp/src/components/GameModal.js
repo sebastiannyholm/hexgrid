@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Modal.css';
+import '../styles/Modal.css';
 
 function GameModal({ headerText, bodyText, footerText }) {
   return (

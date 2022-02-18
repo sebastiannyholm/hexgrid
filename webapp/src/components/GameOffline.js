@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Game.css';
+import '../styles/Game.css';
 import WithSidebar from './Sidebar';
 import { withRouter } from 'react-router';
 
@@ -142,7 +142,7 @@ function GameOffline(props) {
       content={
         gameState ? (
           <div className="game" onClick={winner ? () => setWinner(null) : null}>
-            <Scoreboard rows={getPlayerData(game.players)} />
+            {game && game.players && <Scoreboard rows={getPlayerData(game.players)} />}
             <HexgridComponent
               hexagons={gameState.hexagons}
               players={gameState.players}

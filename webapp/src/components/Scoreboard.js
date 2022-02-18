@@ -1,5 +1,5 @@
 import React from 'react';
-import './Scoreboard.css';
+import '../styles/Scoreboard.css';
 
 function Scoreboard({ rows }) {
   if (rows.length === 0) {
