@@ -116,7 +116,7 @@ function Versus(props) {
                 name={player.name}
                 count={player.count}
                 onCountChange={(newCount) => updatePlayerCount(idx, newCount)}
-                onRemove={() => onRemovePlayer(idx)}
+                onResetCount={() => updatePlayerCount(idx, 0)}
               />
             ))}
           </div>
@@ -126,11 +126,11 @@ function Versus(props) {
   );
 }
 
-const Player = ({ name, count, onCountChange, onRemove }) => {
+const Player = ({ name, count, onCountChange, onResetCount }) => {
   return (
     <div className="player">
       <div className="player-name">
-        <a className="remove-player" onClick={onRemove}>
+        <a className="remove-player" onClick={onResetCount}>
           ✖
         </a>
         {name}
