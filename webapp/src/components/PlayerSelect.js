@@ -83,10 +83,6 @@ function Versus(props) {
     }
   }
 
-  function onRemovePlayer(idx) {
-    console.log('TODO: Remove player at index' + idx);
-  }
-
   return redirect ? (
     <Redirect
       to={{
