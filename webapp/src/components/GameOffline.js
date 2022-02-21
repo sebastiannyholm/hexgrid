@@ -10,6 +10,7 @@ import Loader from './Loader';
 import utils from '../game_stuff/utils';
 import Game from '../game_stuff/game';
 import Modal from './Modal';
+import TooManyPlayersException from '../game_stuff/exceptions';
 
 let game;
 
@@ -56,7 +57,11 @@ function GameOffline(props) {
     console.log(props);
     if (props.location.state && props.location.state.playerCodes) {
       props.location.state.playerCodes.forEach((player) => {
-        game.addPlayer(utils.generateGUID(), player.name, player.codeString);
+        try {
+          game.addPlayer(utils.generateGUID(), player.name, player.codeString);
+        } catch (TooManyPlayersException) {
+          console.log('Too many players - cannot add more players to game');
+        }
       });
     }
     game.setup();

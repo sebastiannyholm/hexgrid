@@ -1,4 +1,5 @@
 import Hexgrid from './hexgrid';
+import TooManyPlayersException from './exceptions';
 const Player = require('./player');
 const utils = require('./utils');
 
@@ -23,7 +24,7 @@ class Game {
   addPlayer(playerId, username, codeString) {
     if (this.hexgrid) throw new Error('Cannot add players to an ongoing game');
     if (Object.values(this.players).length >= utils.Constants.PlayerColors.length)
-      throw new Error('Maximum players reached');
+      throw new TooManyPlayersException('Maximum players reached');
 
     this.players[playerId] = new Player(
       playerId,
