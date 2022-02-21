@@ -74,12 +74,12 @@ const Docs = (
       <li>
         <code>OWN (int)</code>
         <br />
-        Hexagon controlled by the player.
+        Hexagon controlled by the player (you).
       </li>
       <li>
         <code>OTHER (int)</code>
         <br />
-        Hexagon controlled another player.
+        Hexagon controlled by another player (opponent).
       </li>
     </ul>
 

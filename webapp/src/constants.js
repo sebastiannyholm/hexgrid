@@ -10,7 +10,7 @@ const defaultEditorCode = `
 * owner 		enum HexOwner {NONE: 0, OWN: 1, OTHER: 2}
 * 					HexOwner.NONE 	Unoccupied hexagon
 *  					HexOwner.OWN 	Hexagon controlled by this player (you)
-*  					HexOwner.OTHER 	Hexagon controlled another player (opponent)
+*  					HexOwner.OTHER 	Hexagon controlled by another player (opponent)
 *
 * playerCell 	{id:string, resources:int, maxGrowth:int, neighborCells:neighborCell[]}
 * neighborCell 	{id:string, resources:int, owner:HexOwner, maxGrowth:int}
