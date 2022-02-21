@@ -83,6 +83,10 @@ function Versus(props) {
     }
   }
 
+  function resetPlayerCounts() {
+    setAvailablePlayers(players);
+  }
+
   return redirect ? (
     <Redirect
       to={{
@@ -104,6 +108,7 @@ function Versus(props) {
           <Header
             numUniquePlayers={availablePlayers.filter((player) => player.count > 0).length}
             numTotalPlayers={availablePlayers.reduce((acc, player) => acc + player.count, 0)}
+            onResetCount={() => resetPlayerCounts()}
           />
           <div className="players">
             {availablePlayers.map((player, idx) => (
@@ -131,7 +136,7 @@ const Player = ({ name, count, onCountChange, onResetCount }) => {
         </a>
         {name}
       </div>
-      <div className="player-count">
+      <div className="player-counter">
         <Counter onChange={onCountChange} count={count} />
       </div>
     </div>
@@ -139,12 +144,22 @@ const Player = ({ name, count, onCountChange, onResetCount }) => {
 };
 
 const Counter = ({ onChange, count }) => {
+  function handleWheelUpdate(event) {
+    if (event.deltaY < 0) {
+      onChange(count + 1); // scroll up = increment count
+    } else if (event.deltaY > 0) {
+      onChange(count - 1); // scroll down = decrement count
+    }
+  }
+
   return (
     <div className="counter">
       <button className="counter-action decrement" onClick={() => onChange(count - 1)}>
         -
       </button>
-      <div className="counter-count"> {count} </div>
+      <div className="counter-count" onWheel={handleWheelUpdate}>
+        {count}
+      </div>
       <button className="counter-action increment" onClick={() => onChange(count + 1)}>
         +
       </button>
@@ -152,11 +167,33 @@ const Counter = ({ onChange, count }) => {
   );
 };
 
-const Header = ({ numUniquePlayers, numTotalPlayers }) => {
+const Header = ({ numUniquePlayers, numTotalPlayers, onResetCount }) => {
   return (
-    <div>
-      <h2>{`Unique players: ${numUniquePlayers}`}</h2>
-      <h2>{`Total players: ${numTotalPlayers}`}</h2>
+    <div className="header">
+      <h1>Player selection</h1>
+      <PlayerCount numUniquePlayers={numUniquePlayers} numTotalPlayers={numTotalPlayers} onResetCount={onResetCount} />
+    </div>
+  );
+};
+
+const PlayerCount = ({ numUniquePlayers, numTotalPlayers, onResetCount }) => {
+  return (
+    <div className="player-counter">
+      <table className="counts">
+        <tbody>
+          <tr>
+            <td>Unique Players:</td>
+            <td>{numUniquePlayers}</td>
+          </tr>
+          <tr>
+            <td>Total players:</td>
+            <td>{numTotalPlayers}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div className="reset">
+        <button onClick={onResetCount}>Reset</button>
+      </div>
     </div>
   );
 };
