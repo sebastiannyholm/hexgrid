@@ -1,5 +1,5 @@
 import Hexgrid from './hexgrid';
-import TooManyPlayersException from './exceptions';
+import { TooManyPlayersException, TransactionError } from './exceptions';
 const Player = require('./player');
 const utils = require('./utils');
 
@@ -84,9 +84,14 @@ class Game {
     Object.values(this.players).forEach((player) => {
       if (player.isAlive()) {
         try {
-          validPlayerTransactions.push(this.hexgrid.validatePlayerTransaction(player.id, player.transaction));
+          const validPlayerTransaction = this.hexgrid.validatePlayerTransaction(player.id, player.transaction);
+          validPlayerTransactions.push(validPlayerTransaction);
         } catch (e) {
-          console.log(e);
+          if (e instanceof TransactionError) {
+            console.log(e);
+          } else {
+            console.error(e);
+          }
           player.exceptions++;
           return;
         }

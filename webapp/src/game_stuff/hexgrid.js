@@ -2,6 +2,8 @@ const Cube = require('./cube');
 const Hexagon = require('./hexagon');
 const utils = require('./utils');
 
+const { TransactionError } = require('./exceptions');
+
 const NeighborWraparound = {
   NONE: 0,
   WRAP: 1,
@@ -10,37 +12,37 @@ const NeighborWraparound = {
 function getCubesInGrid(rings) {
   var cubesInGrid = [new Cube(0, 0, 0)];
 
-  for (var r = 0; r < rings + 1; r++) {
+  for (let r = 0; r < rings + 1; r++) {
     var x = 0,
       y = -r,
       z = +r;
 
-    for (var i = 0; i < r; i++) {
+    for (let i = 0; i < r; i++) {
       x += 1;
       z -= 1;
       cubesInGrid.push(new Cube(x, y, z));
     }
-    for (var i = 0; i < r; i++) {
+    for (let i = 0; i < r; i++) {
       y += 1;
       z -= 1;
       cubesInGrid.push(new Cube(x, y, z));
     }
-    for (var i = 0; i < r; i++) {
+    for (let i = 0; i < r; i++) {
       x -= 1;
       y += 1;
       cubesInGrid.push(new Cube(x, y, z));
     }
-    for (var i = 0; i < r; i++) {
+    for (let i = 0; i < r; i++) {
       x -= 1;
       z += 1;
       cubesInGrid.push(new Cube(x, y, z));
     }
-    for (var i = 0; i < r; i++) {
+    for (let i = 0; i < r; i++) {
       y -= 1;
       z += 1;
       cubesInGrid.push(new Cube(x, y, z));
     }
-    for (var i = 0; i < r; i++) {
+    for (let i = 0; i < r; i++) {
       x += 1;
       y -= 1;
       cubesInGrid.push(new Cube(x, y, z));
@@ -64,7 +66,6 @@ function _createHexgrid(ringsInGrid, neighborWraparound = NeighborWraparound.WRA
 
   hexagons.forEach((hexagon) => {
     hexagon.cube.neighbors.forEach((neighborCube) => {
-      let d = neighborCube;
       if (neighborWraparound === NeighborWraparound.WRAP) {
         let nearbyMirrorCenter = mirrorCenters.find((centerCube) => centerCube.dist(neighborCube) <= ringsInGrid);
         if (nearbyMirrorCenter) {
@@ -204,21 +205,25 @@ class Hexgrid {
       const fromHexagon = this.hexagonIdDict[transaction.fromId];
       const toHexagon = this.hexagonIdDict[transaction.toId];
 
-      if (!fromHexagon) throw 'cannot perform transaction from hexagon with id: ' + transaction.fromId;
+      if (!fromHexagon)
+        throw new TransactionError('Cannot perform transaction from hexagon with id: ' + transaction.fromId);
 
-      if (!toHexagon) throw 'cannot perform transaction to hexagon with id: ' + transaction.toId;
+      if (!toHexagon) throw new TransactionError('Cannot perform transaction to hexagon with id: ' + transaction.toId);
 
-      if (fromHexagon === toHexagon) throw 'cannot transfer to same cell';
+      if (fromHexagon === toHexagon) throw new TransactionError('Cannot transfer to same cell');
 
       if (fromHexagon.ownerId === toHexagon.ownerId && !this._ownedPathExists(transaction.fromId, transaction.toId))
-        throw 'hexagons are not connected';
+        throw new TransactionError('Hexagons are not connected');
 
-      if (transaction.transferAmount < 0) throw 'cannot transfer negative amounts';
-      else if (fromHexagon.resources < transaction.transferAmount) throw 'not enough resources to transfer';
-      else if (fromHexagon.ownerId !== playerId) throw 'cannot transfer resources from cells you do not own';
+      if (transaction.transferAmount < 0) throw new TransactionError('Cannot transfer negative amounts');
+      else if (fromHexagon.resources < transaction.transferAmount)
+        throw new TransactionError('Not enough resources to transfer');
+      else if (fromHexagon.ownerId !== playerId)
+        throw new TransactionError('Cannot transfer resources from cells you do not own');
       else if (fromHexagon.ownerId !== toHexagon.ownerId && !fromHexagon.neighbors.includes(toHexagon.id))
-        throw 'cannot transfer to non-neighboring cells when attacking';
-      else if (!Number.isInteger(transaction.transferAmount)) throw 'transfer amount is not an integer';
+        throw new TransactionError('Cannot transfer to non-neighboring cells when attacking');
+      else if (!Number.isInteger(transaction.transferAmount))
+        throw new TransactionError('Transfer amount is not an integer');
 
       return {
         playerId: playerId,
@@ -226,7 +231,7 @@ class Hexgrid {
       };
     } catch (e) {
       // the transaction is badly formatted
-      throw 'Invalid transaction: ' + e;
+      throw new TransactionError(e);
     }
   }
 

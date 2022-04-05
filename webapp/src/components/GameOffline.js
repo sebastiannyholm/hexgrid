@@ -10,7 +10,7 @@ import Loader from './Loader';
 import utils from '../game_stuff/utils';
 import Game from '../game_stuff/game';
 import Modal from './Modal';
-import TooManyPlayersException from '../game_stuff/exceptions';
+import { TooManyPlayersException } from '../game_stuff/exceptions';
 
 let game;
 

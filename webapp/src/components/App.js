@@ -4,7 +4,6 @@ import '../styles/App.css';
 import WithNavigation from './NavBar';
 import Editor from './Editor';
 import DocsRules from './DocsRules';
-import Versus from './Versus';
 import GameOffline from './GameOffline';
 import GameLive from './GameLive';
 
