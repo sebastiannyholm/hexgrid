@@ -131,7 +131,7 @@ const Player = ({ name, count, onCountChange, onResetCount }) => {
   return (
     <div className="player">
       <div className="player-name">
-        <a className="remove-player" onClick={onResetCount} href="/#">
+        <a className="remove-player" onClick={onResetCount}>
           ✖
         </a>
         {name}
