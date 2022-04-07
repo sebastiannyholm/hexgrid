@@ -17,8 +17,6 @@ function DocsRules(props) {
     setContent(contents[index]);
   }
 
-  console.log(content.body);
-
   return (
     <WithSidebar
       sidebarElements={contents.map((content, index) => {
