@@ -1,0 +1,32 @@
+.list-view {
+  list-style: disc;
+}
+
+.list-view-indent {
+  list-style: none;
+  margin-left: -20px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: #d5e8f2;
+}
+
+p,
+li {
+  color: #82aec6;
+}
+
+li {
+  margin-bottom: 12px;
+}
+
+#docs,
+#rules {
+  width: 98%;
+  height: 98%;
+  margin: auto;
+}

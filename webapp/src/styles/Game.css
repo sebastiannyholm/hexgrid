@@ -1,0 +1,7 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  width: 98%;
+  height: 98%;
+  margin: auto;
+}
