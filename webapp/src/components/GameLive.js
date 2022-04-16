@@ -55,8 +55,8 @@ function GameLive(props) {
     }
 
     function joinGame() {
-        console.log("Joining game");
-        socketAPI.joinGame("UUUSER");
+        const playerName = localStorage.getItem(Constants.LOCAL_STORAGE_PLAYER_NAME);
+        socketAPI.joinGame(playerName);
     }
 
 
