@@ -43,7 +43,6 @@ function turn(myCells) {
   function getLargestCluster(cells) {
     var assignedCells = {};
     var clusters = {};
-
     var clusterCount = 0;
     var cluster = 0;
 
