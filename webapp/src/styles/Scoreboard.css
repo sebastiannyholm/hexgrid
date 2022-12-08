@@ -22,7 +22,7 @@
 .table-scroll tbody {
   display: block;
   overflow-y: scroll;
-  max-height: 185px;
+  max-height: 373.3px; /* fits 10 rows*/
 }
 
 .table-scroll tr {
