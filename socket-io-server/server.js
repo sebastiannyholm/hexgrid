@@ -17,7 +17,7 @@ let tookTurn = [];
 // START GAME
 
 function startGame() {
-	console.log("Setting up game");
+	console.log("Setting up game..");
 	game.setup();
 	console.log("Game started");
 	lastUpdate = new Date().getTime();
@@ -115,6 +115,7 @@ io.on('connection', function (socket) {
 	socket.on('join_game', function (username) {
 		try {
 			game.addPlayer(socket, username);
+			console.log(`Player ${username} joined the game`)
 		} catch (e) {
 			console.log("addPlayer error:", e);
 		}
