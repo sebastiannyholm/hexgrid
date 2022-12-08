@@ -88,7 +88,8 @@ class Game {
           validPlayerTransactions.push(validPlayerTransaction);
         } catch (e) {
           if (e instanceof TransactionError) {
-            console.log(e);
+            console.log(e.message);
+            console.log(e.transaction);
           } else {
             console.error(e);
           }

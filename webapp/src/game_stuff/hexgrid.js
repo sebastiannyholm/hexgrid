@@ -201,38 +201,32 @@ class Hexgrid {
   }
 
   validatePlayerTransaction(playerId, transaction) {
-    try {
-      const fromHexagon = this.hexagonIdDict[transaction.fromId];
-      const toHexagon = this.hexagonIdDict[transaction.toId];
+    const fromHexagon = this.hexagonIdDict[transaction.fromId];
+    const toHexagon = this.hexagonIdDict[transaction.toId];
 
-      if (!fromHexagon)
-        throw new TransactionError('Cannot perform transaction from hexagon with id: ' + transaction.fromId);
-
-      if (!toHexagon) throw new TransactionError('Cannot perform transaction to hexagon with id: ' + transaction.toId);
-
-      if (fromHexagon === toHexagon) throw new TransactionError('Cannot transfer to same cell');
-
-      if (fromHexagon.ownerId === toHexagon.ownerId && !this._ownedPathExists(transaction.fromId, transaction.toId))
-        throw new TransactionError('Hexagons are not connected');
-
-      if (transaction.transferAmount < 0) throw new TransactionError('Cannot transfer negative amounts');
-      else if (fromHexagon.resources < transaction.transferAmount)
-        throw new TransactionError('Not enough resources to transfer');
-      else if (fromHexagon.ownerId !== playerId)
-        throw new TransactionError('Cannot transfer resources from cells you do not own');
-      else if (fromHexagon.ownerId !== toHexagon.ownerId && !fromHexagon.neighbors.includes(toHexagon.id))
-        throw new TransactionError('Cannot transfer to non-neighboring cells when attacking');
-      else if (!Number.isInteger(transaction.transferAmount))
-        throw new TransactionError('Transfer amount is not an integer');
-
-      return {
-        playerId: playerId,
-        transaction: transaction,
-      };
-    } catch (e) {
-      // the transaction is badly formatted
-      throw new TransactionError(e);
+    if (!fromHexagon || !toHexagon) {
+      throw new TransactionError('Invalid hexagons in transaction', transaction);
     }
+
+    if (fromHexagon === toHexagon) throw new TransactionError('Cannot transfer to same cell', transaction);
+
+    if (fromHexagon.ownerId === toHexagon.ownerId && !this._ownedPathExists(transaction.fromId, transaction.toId))
+      throw new TransactionError('Hexagons are not connected', transaction);
+
+    if (transaction.transferAmount < 0) throw new TransactionError('Cannot transfer negative amounts', transaction);
+    else if (fromHexagon.resources < transaction.transferAmount)
+      throw new TransactionError('Not enough resources to transfer', transaction);
+    else if (fromHexagon.ownerId !== playerId)
+      throw new TransactionError('Cannot transfer resources from cells you do not own', transaction);
+    else if (fromHexagon.ownerId !== toHexagon.ownerId && !fromHexagon.neighbors.includes(toHexagon.id))
+      throw new TransactionError('Cannot transfer to non-neighboring cells when attacking', transaction);
+    else if (!Number.isInteger(transaction.transferAmount))
+      throw new TransactionError('Transfer amount is not an integer', transaction);
+
+    return {
+      playerId: playerId,
+      transaction: transaction,
+    };
   }
 
   /**
