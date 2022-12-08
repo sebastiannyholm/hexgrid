@@ -47,8 +47,8 @@ function turn(myCells) {
     var clusterCount = 0;
     var cluster = 0;
 
-    for (var i = 0; i < myCells.length; i++) {
-      var cell = myCells[i];
+    for (var i = 0; i < cells.length; i++) {
+      var cell = cells[i];
 
       if (cell.id in assignedCells) {
         cluster = assignedCells[cell.id];
@@ -148,8 +148,8 @@ function turn(myCells) {
 
   if (source === null || target === null) {
     return {
-      fromId: maxCluster[0],
-      toId: maxCluster[0].neighbors[0],
+      fromId: maxCluster[0].id,
+      toId: maxCluster[0].neighbors[0].id,
       transferAmount: maxCluster[0].resources - 1,
     };
   }
@@ -233,7 +233,7 @@ function turn(myCells) {
         if (maxCluster.length === 1)
           return {
             fromId: source.id,
-            toId: target.Id,
+            toId: target.id,
             transferAmount: source.resources / 2,
           };
 
