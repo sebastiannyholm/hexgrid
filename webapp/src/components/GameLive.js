@@ -10,78 +10,71 @@ import Loader from './Loader';
 import Modal from './Modal';
 import socketAPI from '../socket_api';
 
-
 function GameLive(props) {
-    const [hexgridOrientation, setHexgridOrientation] = useState(Constants.HexgridOrientation.POINTY);
-    const [gameState, setGameState] = useState(null);
-    const [socketId, setSocketId] = useState(null);
-    const [winner, setWinner] = useState(null);
+  const [hexgridOrientation, setHexgridOrientation] = useState(Constants.HexgridOrientation.POINTY);
+  const [gameState, setGameState] = useState(null);
+  const [socketId, setSocketId] = useState(null);
+  const [winner, setWinner] = useState(null);
 
-    // componentDidMount
-    useEffect(() => {
+  // componentDidMount
+  useEffect(() => {
+    socketAPI.subscribeToGameState((currentState) => {
+      setGameState(currentState);
+    });
 
-        socketAPI.subscribeToGameState((currentState) => {
-            setGameState(currentState);
-        });
+    socketAPI.subscribeToGameOver((winner) => {
+      setWinner(winner);
+    });
 
-        socketAPI.subscribeToGameOver((winner) => {
-            setWinner(winner);
-        });
+    // TODO: only do this once (despite many join game, only 1-1 relation between game and turn data sub)
+    console.log('Subscribing to turn data');
+    socketAPI.subscribeToTurn((playerCells) => {
+      let transaction = calculateTransaction(playerCells);
+      // console.log(playerCells)
+      // console.log(transaction)
+      socketAPI.takeTurn(transaction);
+    });
+  }, []);
 
-        // TODO: only do this once (despite many join game, only 1-1 relation between game and turn data sub)
-        console.log("Subscribing to turn data");
-        socketAPI.subscribeToTurn((playerCells) => {
-            let transaction = calculateTransaction(playerCells);
-            // console.log(playerCells)
-            // console.log(transaction)
-            socketAPI.takeTurn(transaction);
-        });
+  function connect() {
+    socketAPI.connect((socketId) => {
+      console.log('Connected to server on socket', socketId);
+      setSocketId(socketId);
+    });
+  }
 
-    }, []);
+  function disconnect() {
+    socketAPI.disconnect(() => {
+      console.log('Disconnected from server');
+      setSocketId(null);
+    });
+  }
 
-    function connect() {
-        socketAPI.connect((socketId) => {
-            console.log("Connected to server on socket", socketId);
-            setSocketId(socketId);
-        });
-    }
+  function joinGame() {
+    const playerName = localStorage.getItem(Constants.LOCAL_STORAGE_PLAYER_NAME);
+    socketAPI.joinGame(playerName);
+  }
 
-    function disconnect() {
-        socketAPI.disconnect(() => {
-            console.log("Disconnected from server");
-            setSocketId(null);
-        });
-    }
+  const gameSidebarElements = [
+    <span key={0} className="sidebar-item interactable" disabled={!socketId} onClick={connect}>
+      Connect to server (temp)
+    </span>,
+    <span key={2} className="sidebar-item interactable" disabled={!socketId} onClick={joinGame}>
+      Join game
+    </span>,
+    <span key={1} className="sidebar-item interactable" disabled={socketId} onClick={disconnect}>
+      Disconnect from server (temp)
+    </span>,
+    <span key={7} className="sidebar-item interactable" onClick={onSwitchHexgridOrientation}>
+      Switch orientation
+    </span>,
+  ];
 
-    function joinGame() {
-        const playerName = localStorage.getItem(Constants.LOCAL_STORAGE_PLAYER_NAME);
-        socketAPI.joinGame(playerName);
-    }
-
-
-    const gameSidebarElements = [
-        <span key={0} className="sidebar-item interactable" disabled={!socketId} onClick={connect}>Connect to server (temp)</span>,
-        <span key={2} className="sidebar-item interactable" disabled={!socketId} onClick={joinGame}>Join game</span>,
-        <span key={1} className="sidebar-item interactable" disabled={socketId} onClick={disconnect}>Disconnect from server (temp)</span>,
-        <span key={7} className="sidebar-item interactable" onClick={onSwitchHexgridOrientation}>Switch orientation</span>,
-    ];
-
-    function onSwitchHexgridOrientation() {
-        setHexgridOrientation(hexgridOrientation === Constants.HexgridOrientation.FLAT ? Constants.HexgridOrientation.POINTY : Constants.HexgridOrientation.FLAT);
-    }
-
-    return (
-        <WithSidebar
-            sidebarElements={gameSidebarElements}
-            content={gameState ? <div className="game" onClick={winner ? () => setWinner(null) : null}>
-                <Hexgrid hexagons={gameState.hexagons} players={gameState.players} orientation={hexgridOrientation} />
-
-                <div id="scoreboard-wrapper">
-                    <Scoreboard rows={getPlayerData(gameState.players)} />
-                </div>
-                {winner ? <Modal headerText="Winner" bodyText={winner.name} footerText="Congratulations" /> : null}
-            </div> : <Loader>Waiting for game to start...</Loader>}
-        />
+  function onSwitchHexgridOrientation() {
+    setHexgridOrientation(
+      hexgridOrientation === Constants.HexgridOrientation.FLAT
+        ? Constants.HexgridOrientation.POINTY
+        : Constants.HexgridOrientation.FLAT,
     );
   }
 
