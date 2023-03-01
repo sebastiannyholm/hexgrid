@@ -12,6 +12,7 @@ import DefaultBot from '../stored_algorithms/algos/DefaultBot';
 import EasyBot from '../stored_algorithms/algos/EasyBot';
 import twSupply from '../stored_algorithms/algos/twSupply';
 import MakeItSafe from '../stored_algorithms/algos/MakeItSafe';
+import MakeItSafe2 from '../stored_algorithms/algos/MakeItSafe2';
 
 function getActivePlayers(availablePlayers) {
   var players = [];
@@ -57,6 +58,7 @@ function Versus(props) {
     { name: EasyBot.name, codeString: EasyBot.turn.toString(), count: 0 },
     { name: twSupply.name, codeString: twSupply.turn.toString(), count: 0 },
     { name: MakeItSafe.name, codeString: MakeItSafe.turn.toString(), count: 0 },
+    { name: MakeItSafe2.name, codeString: MakeItSafe2.turn.toString(), count: 0 },
   ];
 
   const [availablePlayers, setAvailablePlayers] = useState(players);

@@ -44,8 +44,9 @@ function getPlayerData(playerMap) {
 function GameOffline(props) {
   const [hexgridOrientation, setHexgridOrientation] = useState(Constants.HexgridOrientation.POINTY);
   const [gameInterval, setGameInterval] = useState(null);
-  const [gameState, setGameState] = useState(null);
+  const [gameState, setGameState] = useState([]);
   const [winner, setWinner] = useState(null);
+  const [stateIndex, setStateIndex] = useState(0);
 
   // componentDidMount
   useEffect(() => {
@@ -70,7 +71,8 @@ function GameOffline(props) {
       });
     }
     game.setup();
-    setGameState(game.getCurrentState());
+    setGameState([game.getCurrentState()]);
+    setStateIndex(0)
     console.log(game);
   }
 
@@ -84,6 +86,9 @@ function GameOffline(props) {
     <span key={2} className="sidebar-item interactable" onClick={onNextStep}>
       Next step
     </span>,
+    <span key={3} className="sidebar-item interactable" onClick={onPrevStep}>
+      Last step
+    </span>,
     // <span key={3} className="sidebar-item interactable" onClick={onPrevStep}>Prev step</span>,
     // <span key={4} className="sidebar-item interactable" onClick={onSpeedUp}>Speed up</span>,
     // <span key={5} className="sidebar-item interactable" onClick={onSpeedDown}>Speed down</span>,
@@ -96,22 +101,30 @@ function GameOffline(props) {
   ];
 
   function onNextStep() {
-    if (game && !game.isGameOver()) {
-      Object.values(game.players).forEach((player) => {
-        if (player.isAlive()) {
-          try {
-            let transaction = player.turn(game.getPlayerCells(player.id));
-            game.handleTransaction(player.id, transaction);
-          } catch (e) {
-            console.log(e);
-            player.exceptions++;
+    if (stateIndex === gameState.length - 1) {
+      if (game && !game.isGameOver()) {
+        Object.values(game.players).forEach((player) => {
+          if (player.isAlive()) {
+            try {
+              let transaction = player.turn(game.getPlayerCells(player.id));
+              game.handleTransaction(player.id, transaction);
+            } catch (e) {
+              console.log(e);
+              player.exceptions++;
+            }
           }
-        }
-      });
+        });
 
-      game.update();
-      setGameState(game.getCurrentState());
+        game.update();
+        setGameState([...gameState, game.getCurrentState()]);
+      }
     }
+
+    setStateIndex(stateIndex + 1)
+  }
+
+  function onPrevStep() {
+    setStateIndex(stateIndex - 1)
   }
 
   function onPlay() {
@@ -150,12 +163,12 @@ function GameOffline(props) {
     <WithSidebar
       sidebarElements={gameSidebarElements}
       content={
-        gameState ? (
+        gameState.length > 0 ? (
           <div className="game" onClick={winner ? () => setWinner(null) : null}>
             {game && game.players && <Scoreboard rows={getPlayerData(game.players)} />}
             <HexgridComponent
-              hexagons={gameState.hexagons}
-              players={gameState.players}
+              hexagons={gameState[stateIndex].hexagons}
+              players={gameState[stateIndex].players}
               orientation={hexgridOrientation}
             />
             {winner ? <Modal headerText="Winner" bodyText={winner.name} footerText="Congratulations" /> : null}
